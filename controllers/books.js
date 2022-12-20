@@ -57,7 +57,7 @@ router.get('/:id', async (req, res) => {
     try {
         const book = await Db.Books.findById(id)
         .then(book=> {
-            res.json(book)
+            res.status(200).json(book)
         }) 
     } catch (err) {
         console.log(err) 
@@ -72,7 +72,7 @@ router.post('/', async (req,res) => {
     if (!quanity) req.body.year = undefined
     try {
     await Db.Books.create(req.body)
-    res.json(req.body)    
+    res.status(201).json(req.body)    
     } catch (err) {
         console.log(err) 
         res.status(400).json(err)
@@ -82,8 +82,11 @@ router.post('/', async (req,res) => {
 // PUT: Update a book by ID
 router.put('/:id', async (req,res) => {
     const { id } = req.params
+    console.log(req.body)
     try {
-        
+        await Db.Books.findByIdAndUpdate(id, req.body)
+        let book = await Db.Books.findById(id)
+        res.status(200).json(book)   
     } catch (err) {
         console.log(err) 
         res.status(400).json(err)
@@ -94,7 +97,10 @@ router.put('/:id', async (req,res) => {
 router.delete('/:id', async (req,res) => {
     const { id } = req.params
     try {
-        
+        await Db.Books.findByIdAndDelete(id)
+        res.status(303).json({
+            message: 'Delete successful'
+        })
     } catch (err) {
         console.log(err) 
         res.status(400).json(err)
