@@ -67,9 +67,9 @@ router.get('/:id', async (req, res) => {
 
 // POST: Create a new book
 router.post('/', async (req,res) => {
-    const { year, quanity } = req.body
+    const { year, quantity } = req.body
     if (!year) req.body.year = undefined
-    if (!quanity) req.body.year = undefined
+    if (!quantity) req.body.year = undefined
     try {
     await Db.Books.create(req.body)
     res.status(201).json(req.body)    
@@ -82,7 +82,6 @@ router.post('/', async (req,res) => {
 // PUT: Update a book by ID
 router.put('/:id', async (req,res) => {
     const { id } = req.params
-    console.log(req.body)
     try {
         await Db.Books.findByIdAndUpdate(id, req.body)
         let book = await Db.Books.findById(id)
